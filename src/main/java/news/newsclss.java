@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -14,43 +15,79 @@ public class newsclss {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
-		 WebDriver driver = new ChromeDriver();
-		 driver.manage().window().maximize();
-		 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		 
-		 driver.get("https://www.newswire.com/newsroom");
-		 
-//		// driver.findElement(By.xpath("//h3[contains(text(),'U.S. Polo Assn. Welcomes the XII Federation of Int')]")).click();
+		
+		  System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
+		  WebDriver driver = new ChromeDriver();
+		  driver.manage().window().maximize();
+		  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		  
+		  driver.get("https://www.newswire.com/newsroom");
+		  
+		  System.out.println(driver.findElements(By.tagName("a")).size());
+		  
+		  WebElement links = driver.findElement(By.cssSelector("[class='row masonry']"));
+		  System.out.println(links.findElements(By.tagName("a")).size());
+		  
+		  for(int i=0; i<links.findElements(By.tagName("a")).size(); i++) 
+		  {
+			  String num = Keys.chord(Keys.CONTROL, Keys.ENTER);
+			  links.findElements(By.tagName("a")).get(i).sendKeys(num);
+		  }
+		  
+		  Set<String> hand = driver.getWindowHandles();
+		  Iterator<String> it = hand.iterator();
+		  
+		    // Set<String> allTab= driver.getWindowHandles();
+	       //  Iterator<String>it=allTab.iterator();
 		  
 		  
-		
-		 driver.findElement(By.xpath("//div[@class='nw-subnavigation-wrapper']//li[6]")).click();
-		 driver.findElement(By.xpath("//a[normalize-space()='Books']")).click();
-		 driver.findElement(By.xpath("//img[@alt=\"Author Robert DeVoto's New Book 'The Adventures of Billy Box' is a Riveting Tale Centered Around Billy Box and His Friends as They Prepare for the Upcoming BMX Bike Race\"]")).click();
-	     
-		
-		 WebElement el =  driver.findElement(By.xpath("//div[@class='smaller']"));		
-	System.out.println(el.getText());
-		
-		
-		 driver.findElement(By.xpath("//a[@class='nw-navigation__item-text'][normalize-space()='Newsroom']")).click();
+		  //String parentWindowId = it.next();
+		//  System.out.println("print" + parentWindowId);
+		 // System.out.println("parent title" + driver.getTitle());
+		  
+		  String childWindowId = it.next();
+		 // System.out.println("print" + childWindowId);
+		  
+		 // driver.switchTo().window(parentWindowId); 
+		  
+		  driver.switchTo().window(childWindowId);
+		  
+	  while(it.hasNext()) {
+		  int i=0;
+		 driver.switchTo().window(it.next());
+		 WebElement linksc = driver.findElement(By.linkText("Contact Information"));
+		 linksc.click();
 		 
-		 Set<String> hand = driver.getWindowHandles();
-		 Iterator<String> it = hand.iterator();
-		 String parentWindowId = it.next();
-		 String childWindowId = it.next();
 		 
-		 driver.switchTo().window(childWindowId);
+//		 if(driver.findElement(By.cssSelector("div[class='smaller'] i[class='fa fa-envelope']")).size()!= 0) {
+//			 
+//		 }
+		 
+		 if(driver.findElements( By.cssSelector("div[class='smaller'] i[class='fa fa-envelope']") ).size()!= 0)
+       {    
+         //Thread.sleep(1000);    
+        // System.out.println("Elemet is Present");
+         WebElement grab2=driver.findElement(By.cssSelector("div[class='smaller'] i[class='fa fa-envelope']"));
+         System.out.println(grab2.getText());
+       }else {
+           // i++;
+      	 int Not_Element =  i++;
+      	 
+         //System.out.println("Element is not Present");
+         System.out.println(Not_Element);
+      }
 		
-	driver.findElement(By.xpath("//body/section[@class='home-latest-news latest-news']/div[@class='wrapper']/div[@id='ln-container']/div[1]")).click();
-	
-	driver.findElement(By.xpath("//a[normalize-space()='Contact Information']")).click();		 
-	 WebElement fl =  driver.findElement(By.xpath("//div[@class='smaller']"));		
-	System.out.println(fl.getText());
-	
-	
-	 driver.findElement(By.xpath("//a[@class='nw-navigation__item-text'][normalize-space()='Newsroom']")).click();
+		// WebElement email= driver.findElement(By.cssSelector("div[class='smaller'] i[class='fa fa-envelope']"));
+		
+		 
+		 
+		 
+		
+		 		 	 
+		 // System.out.println(email.getText());
+	  
+//			              // System.out.println(driver.getTitle());
+	  }
 
 
 	}
